@@ -12,21 +12,15 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 
-    <!-- Angular library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
-    <!-- main.js -->
-    <script src="main.js"></script>
-    
+    <!-- Vue library -->
+    <script src="https://unpkg.com/vue"></script>
+
     <title>Runes Map</title>
 
 </head>
@@ -41,61 +35,62 @@
         </div>
     </nav>
 
-
-    <div ng-app="rune" ng-controller="runeCtrl" class="container">
-
+    <div class="container">
         <div class="row">
             <div class="col">
                 <canvas id="cnvs" width="400px" height="200px"></canvas>
             </div>
-            <div class="col">
+            <div class="col" id="drawApp">
                 <h1 class="destRune runefont_Big">{{sourceRune}}</h1>
                 <h1 class="destRune runefont_Big">{{destRunes}}</h1>
             </div>
         </div>
+    </div>
+    
+    <div id="runeApp" class="container">
 
         <div class="row">
-            <div class="col" ng-repeat="x in runemap1">
-                <H5 ng-style="textStyle({{x.isSuper}})">{{ x.display }}</H5>
-                <button type="button" class="btn btn-info runefont_Big" ng-click="setDestRunes(x.name)">{{ x.name }}</button>
-                <button type="button" class="btn btn-info runefont_Big" ng-click="setDestRunes(x.name0)" ng-hide="{{x.isSuper}}">{{ x.name0 }}</button>
+            <div class="col" v-for="x in runemap1">
+                <H5 v-bind:style="textStyle(x.isSuper)">{{ x.display }}</H5>
+                <button type="button" class="btn btn-info runefont_Big" v-on:click="setDestRunes(x.name)">{{ x.name }}</button>
+                <button type="button" class="btn btn-info runefont_Big" v-on:click="setDestRunes(x.name0)" v-if="!x.isSuper">{{ x.name0 }}</button>
             </div>
         </div>
 
         <div class="row">
-            <div class="col" ng-repeat="x in runemap2">
-                <H5 ng-style="textStyle({{x.isSuper}})">{{ x.display }}</H5>
-                <button type="button" class="btn btn-info runefont_Big" ng-click="setDestRunes(x.name)">{{ x.name }}</button>
-                <button type="button" class="btn btn-info runefont_Big" ng-click="setDestRunes(x.name0)" ng-hide="{{x.isSuper}}">{{ x.name0 }}</button>
+            <div class="col" v-for="x in runemap2">
+                <H5 v-bind:style="textStyle(x.isSuper)">{{ x.display }}</H5>
+                <button type="button" class="btn btn-info runefont_Big" v-on:click="setDestRunes(x.name)">{{ x.name }}</button>
+                <button type="button" class="btn btn-info runefont_Big" v-on:click="setDestRunes(x.name0)" v-if="!x.isSuper">{{ x.name0 }}</button>
             </div>
         </div>
 
         <div class="row">
-            <div class="col" ng-repeat="x in runemap3">
-                <H5 ng-style="textStyle({{x.isSuper}})">{{ x.display }}</H5>
-                <button type="button" class="btn btn-info runefont_Big" ng-click="setDestRunes(x.name)">{{ x.name }}</button>
-                <button type="button" class="btn btn-info runefont_Big" ng-click="setDestRunes(x.name0)" ng-hide="{{x.isSuper}}">{{ x.name0 }}</button>
+            <div class="col" v-for="x in runemap3">
+                <H5 :style="textStyle(x.isSuper)">{{ x.display }}</H5>
+                <button type="button" class="btn btn-info runefont_Big" v-on:click="setDestRunes(x.name)">{{ x.name }}</button>
+                <button type="button" class="btn btn-info runefont_Big" v-on:click="setDestRunes(x.name0)" v-if="!x.isSuper">{{ x.name0 }}</button>
             </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <div ng-repeat="x in sourceList">
-                    <input type="text" ng-model="x.name" placeholder="Source runes">
-                    <button type="button" class="btn btn-success" ng-click="analize(x)">Analize</button>
-                    <button type="button" class="btn btn-success" ng-click="sourceListAdd(x)">Add</button>
-                    <button type="button" class="btn btn-success" ng-click="sourceListDelete(x)">Delete</button>
+                <div v-for="x in sourceList">
+                    <input type="text" v-model="x.name" placeholder="Source runes">
+                    <button type="button" class="btn btn-success" v-on:click="analize(x)">Analize</button>
+                    <button type="button" class="btn btn-success" v-on:click="sourceListAdd(x)">Add</button>
+                    <button type="button" class="btn btn-success" v-on:click="sourceListDelete(x)">Delete</button>
                     <h2 class="runefont">{{x.name}}</h2>
                     <h1 class="destRune runefont_Big">{{x.analize}}</h1>
                 </div>
             </div>
             <div class="col">
-                <div ng-repeat="x in sourceDivide">
-                    <input type="text" ng-model="x.name" placeholder="Dest runes">
-                    <button type="button" class="btn btn-success" ng-click="divide(x)">Divide</button>
-                    <button type="button" class="btn btn-success" ng-click="find(x)">Find</button>
-                    <button type="button" class="btn btn-success" ng-click="sourceDivideAdd(x)">Add</button>
-                    <button type="button" class="btn btn-success" ng-click="sourceDivideDelete(x)">Delete</button>
+                <div v-for="x in sourceDivide">
+                    <input type="text" v-model="x.name" placeholder="Dest runes">
+                    <button type="button" class="btn btn-success" v-on:click="divide(x)">Divide</button>
+                    <button type="button" class="btn btn-success" v-on:click="find(x)">Find</button>
+                    <button type="button" class="btn btn-success" v-on:click="sourceDivideAdd(x)">Add</button>
+                    <button type="button" class="btn btn-success" v-on:click="sourceDivideDelete(x)">Delete</button>
                     <h2 class="runefont">{{x.name}}</h2>
                     <h1 class="destRuneGreen runefont_Big">{{x.nameDivided}}</h1>
                 </div>
@@ -104,35 +99,11 @@
 
     </div>
 
-
-    <style type="text/css">
-        .runefont {
-            font-family: 'elder_futharkregular';
-        }
-
-        .runefont_Big {
-            font-family: 'elder_futharkregular';
-            font-size: xx-large;
-        }
-
-        .row {
-            margin-top: 30px;
-        }
-
-        .destRune {
-            color: blue;
-        }
-
-        .destRuneGreen {
-            color: green;
-        }
-
-        #cnvs {
-            width: 400px;
-            height: 200px;
-            background: url(setka.png);
-        }
-    </style>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+    <script src="./src/const.js"></script>
+    <script src="./src/utils.js"></script>
+    <script src="./src/drawUtil.js"></script>
+    <script src="main.js"></script>
 
 </body>
 

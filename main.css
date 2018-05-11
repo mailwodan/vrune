@@ -1,0 +1,26 @@
+.runefont {
+    font-family: 'elder_futharkregular';
+}
+
+.runefont_Big {
+    font-family: 'elder_futharkregular';
+    font-size: xx-large;
+}
+
+.row {
+    margin-top: 30px;
+}
+
+.destRune {
+    color: blue;
+}
+
+.destRuneGreen {
+    color: green;
+}
+
+#cnvs {
+    width: 400px;
+    height: 200px;
+    background: url(./src/img/setka.png);
+}
